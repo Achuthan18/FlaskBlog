@@ -32,14 +32,20 @@ def register():
     if request.method=='POST'and form.validate():
      print("validated")
      flash(f"Account created for {form.username.data} !",'success')
-     return redirect('home')
+     return redirect(url_for('home'))
     else:
         print(form.errors)
     return render_template('Register.html',title='Register',form=form)
 
-@app.route("/login") 
+@app.route("/login",methods=['GET','POST']) 
 def login():
-    form=LoginForm()  
+    form=LoginForm() 
+    if form.validate_on_submit():
+        if form.email.data=='admin@blog.com' and form.password.data=="password":
+            flash("You have been logged in",'sucess')
+            return redirect(url_for('home'))
+        else:
+            flash("Login Unsuccesful! Please Check username and password")
     return render_template('Login.html',title='Login',form=form) 
 
 if __name__=='__main__':
