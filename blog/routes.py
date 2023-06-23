@@ -1,9 +1,9 @@
-from flask import Flask,render_template,url_for,flash,redirect,request
-from forms import RegistrationForm,LoginForm
 
+from flask import render_template,url_for,flash,redirect,request
+from blog import app
+from blog.models import User,Post
+from blog.forms import RegistrationForm,LoginForm
 
-app = Flask(__name__)
-app.config['SECRET_KEY']='cbdb6e657cf758ceb5b343174751f5b75c1b'
 
 posts=[
     { 'author':'Achuthan','content':'football','title':'first blog post','date_posted':'April 10th 2023'
@@ -47,6 +47,3 @@ def login():
         else:
             flash("Login Unsuccesful! Please Check username and password")
     return render_template('Login.html',title='Login',form=form) 
-
-if __name__=='__main__':
-    app.run(debug=True)
