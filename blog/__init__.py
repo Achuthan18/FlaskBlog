@@ -7,6 +7,7 @@ from flask_mail import Mail
 from blog.config import Config
 
 db=SQLAlchemy()
+
 bcrypt=Bcrypt()
 login_manager=LoginManager()
 login_manager.login_view='users.login'
@@ -20,6 +21,7 @@ def create_app(config_class=Config):
     
     db.init_app(app)
     app.app_context().push()
+    
     bcrypt.init_app(app)
     login_manager.init_app(app)
     mail.init_app(app)
@@ -34,4 +36,6 @@ def create_app(config_class=Config):
     app.register_blueprint(errors)
 
     return app
+
+
 
