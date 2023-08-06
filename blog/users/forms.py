@@ -1,13 +1,15 @@
-from flask_wtf import FlaskForm 
-from flask_wtf.file import FileField,FileAllowed
+from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
+from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flask_login import current_user
-from wtforms import StringField,PasswordField,SubmitField,BooleanField,Form,TextAreaField
-from wtforms.validators import email,DataRequired,length,EqualTo,Email,ValidationError
-from blog.models import User,Post
+from blog.models import User
+
+
 
 class RegistrationForm(FlaskForm):
 
-    username=StringField('Username',validators=[DataRequired(),length(min=2,max=14)])
+    username=StringField('Username',validators=[DataRequired(),Length(min=2,max=14)])
 
     email=StringField('Email',validators=[DataRequired(),Email()])
 
@@ -29,7 +31,7 @@ class RegistrationForm(FlaskForm):
 
 class LoginForm(FlaskForm):
 
-    email=StringField('Email',validators=[DataRequired(),email()])
+    email=StringField('Email',validators=[DataRequired(),Email()])
 
     password=PasswordField('Password',validators=[DataRequired()])
 
@@ -39,7 +41,7 @@ class LoginForm(FlaskForm):
 
 class UpdateAccountForm(FlaskForm):
 
-    username=StringField('Username',validators=[DataRequired(),length(min=2,max=14)])
+    username=StringField('Username',validators=[DataRequired(),Length(min=2,max=14)])
 
     email=StringField('Email',validators=[DataRequired(),Email()])
 
@@ -59,13 +61,7 @@ class UpdateAccountForm(FlaskForm):
          user=User.query.filter_by(email=email.data).first()
          if user:
              raise ValidationError(f'An account already exists for {email.data}')  
-        
-           
-class PostForm(FlaskForm):
-    title=StringField('Title',validators=[DataRequired()])
-    content=TextAreaField('Content',validators=[DataRequired()])
-    submit=SubmitField('Post')
-
+         
 class RequestResetForm(FlaskForm):
     email=StringField('Email',validators=[DataRequired(),Email()])
     submit=SubmitField('Request Password Reset')
@@ -81,8 +77,4 @@ class ResetPasswordForm(FlaskForm):
 
     confirm_password=PasswordField('Confirm Password',validators=[DataRequired(),EqualTo('password')])
 
-    submit=SubmitField('Reset Password')
-
-
-
-
+    submit=SubmitField('Reset Password')         
